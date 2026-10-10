@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { CONTACT } from "@/data/site";
 
 export default function FloatingWhatsApp() {
   const [visible, setVisible] = useState(false);
@@ -20,7 +21,7 @@ export default function FloatingWhatsApp() {
 
   return (
     <a
-      href="https://wa.me/6285124432231"
+      href={`https://wa.me/${CONTACT.waNumber}`}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat WhatsApp Banantara Joury"

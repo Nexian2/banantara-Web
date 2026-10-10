@@ -1,35 +1,49 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+
+const FULL_DURATIONS = { loading: 1200, expanding: 2000, reveal: 2800 };
 
 export default function IntroOverlay() {
   const [mounted, setMounted] = useState(false);
   const [phase, setPhase] = useState("idle");
+  const timers = useRef([]);
 
   useEffect(() => {
     setMounted(true);
     const seen = sessionStorage.getItem("bj_intro_seen");
-    if (seen) {
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (seen || prefersReduced) {
       setPhase("completed");
     }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      timers.current.forEach((t) => clearTimeout(t));
+    };
   }, []);
 
   const handleTrigger = () => {
     if (phase !== "idle") return;
     setPhase("loading");
 
-    setTimeout(() => {
-      setPhase("expanding");
-    }, 1200);
-
-    setTimeout(() => {
-      setPhase("revealing");
-    }, 2000);
-
-    setTimeout(() => {
-      setPhase("completed");
-      sessionStorage.setItem("bj_intro_seen", "1");
-    }, 2800);
+    const d = FULL_DURATIONS;
+    timers.current.push(
+      setTimeout(() => setPhase("expanding"), d.loading),
+      setTimeout(() => setPhase("revealing"), d.expanding),
+      setTimeout(() => {
+        setPhase("completed");
+        try {
+          sessionStorage.setItem("bj_intro_seen", "1");
+        } catch {
+          /* ignore private-mode storage errors */
+        }
+      }, d.reveal)
+    );
   };
 
   if (!mounted || phase === "completed") return null;

@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { divisions } from "@/data/divisions";
+import { CONTACT } from "@/data/site";
 import Reveal from "@/components/Reveal";
+import { ArrowRightIcon, CheckIcon, CloseIcon } from "@/components/Icons";
 
 export default function Divisions() {
   const [selectedDivision, setSelectedDivision] = useState(null);
@@ -74,11 +76,14 @@ export default function Divisions() {
               }}
             >
               <img src={division.logo} alt={`Logo divisi ${division.code}`} />
-              <p className="bj-card-title">{division.code}</p>
+              <h3 className="bj-card-title">{division.code}</h3>
               <span className="bj-card-tag">{division.scope}</span>
               <p className="bj-card-tagline">{division.tagline}</p>
               <div className="bj-card-action">
-                <span className="bj-card-btn-text">Eksplorasi Lengkap &rarr;</span>
+                <span className="bj-card-btn-text">
+                  Eksplorasi Lengkap
+                  <ArrowRightIcon size={15} />
+                </span>
               </div>
             </div>
           </Reveal>
@@ -106,7 +111,7 @@ export default function Divisions() {
               aria-label="Tutup jendela"
               onClick={() => setSelectedDivision(null)}
             >
-              &times;
+              <CloseIcon size={18} />
             </button>
 
             <div className="bj-modal-header">
@@ -152,7 +157,8 @@ export default function Divisions() {
                 className="bj-btn"
                 onClick={() => openFullscreen(selectedDivision)}
               >
-                <span>Pelajari Rincian Lengkap &rarr;</span>
+                <span>Pelajari Rincian Lengkap</span>
+                <ArrowRightIcon size={16} />
               </button>
             </div>
           </div>
@@ -195,7 +201,8 @@ export default function Divisions() {
                 aria-label="Tutup tampilan penuh"
                 onClick={() => setFullscreenDivision(null)}
               >
-                &times; Tutup
+                <CloseIcon size={16} />
+                <span>Tutup</span>
               </button>
             </div>
 
@@ -220,7 +227,9 @@ export default function Divisions() {
                         <ul className="bj-deliverables-list">
                           {pillar.deliverables.map((item) => (
                             <li key={item}>
-                              <span className="bj-deliv-dot">&bull;</span>
+                              <span className="bj-deliv-dot">
+                                <CheckIcon size={13} strokeWidth={3.2} />
+                              </span>
                               <span>{item}</span>
                             </li>
                           ))}
@@ -259,7 +268,7 @@ export default function Divisions() {
                 <p>Siap berkolaborasi atau membutuhkan solusi dari divisi {fullscreenDivision.code}?</p>
                 <div className="bj-fullscreen-cta-actions">
                   <a
-                    href={`https://wa.me/6285124432231?text=${encodeURIComponent(`Halo Banantara Joury, saya ingin berkonsultasi mengenai kebutuhan divisi ${fullscreenDivision.code} (${fullscreenDivision.name}).`)}`}
+                    href={`https://wa.me/${CONTACT.waNumber}?text=${encodeURIComponent(`Halo Banantara Joury, saya ingin berkonsultasi mengenai kebutuhan divisi ${fullscreenDivision.code} (${fullscreenDivision.name}).`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="bj-btn"

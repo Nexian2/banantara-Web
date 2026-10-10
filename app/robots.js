@@ -1,3 +1,5 @@
+import { SITE_URL } from "@/data/site";
+
 export default function robots() {
   return {
     rules: [
@@ -6,7 +8,7 @@ export default function robots() {
         allow: "/",
       },
     ],
-    sitemap: "https://banantarajoury.co.id/sitemap.xml",
-    host: "https://banantarajoury.co.id",
+    sitemap: `${SITE_URL}/sitemap.xml`,
+    host: new URL(SITE_URL).host,
   };
 }
