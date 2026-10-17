@@ -1,13 +1,10 @@
 import Reveal from "@/components/Reveal";
 import PageHero from "@/components/PageHero";
-import Portfolio from "@/components/Portfolio";
-import CadShowcase from "@/components/CadShowcase";
-import IsdShowcase from "@/components/IsdShowcase";
-import MmdShowcase from "@/components/MmdShowcase";
+import PortfolioGallery from "@/components/PortfolioGallery";
+import MmdInlineShowcase from "@/components/MmdInlineShowcase";
 import { CheckIcon } from "@/components/Icons";
 import { CONTACT, SITE_URL } from "@/data/site";
 import { divisions } from "@/data/divisions";
-import { portfolio } from "@/data/portfolio";
 import { cadPortfolioGroups } from "@/data/cad-portfolio";
 import { isdPortfolioGroups } from "@/data/isd-portfolio";
 import { mmdVideos } from "@/data/mmd-video";
@@ -53,9 +50,6 @@ const paymentIcons = {
   ),
 };
 
-const portfolioByDivision = (id) =>
-  portfolio.find((group) => group.divisionId === id)?.items ?? [];
-
 const serviceSchema = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
@@ -96,7 +90,6 @@ export default function ProdukDanJasaPage() {
       <main>
         {divisions.map((division, index) => {
           const alt = index % 2 === 1;
-          const items = portfolioByDivision(division.id);
           return (
             <section
               key={division.id}
@@ -104,6 +97,15 @@ export default function ProdukDanJasaPage() {
               className={`bj-section${alt ? " bj-section-alt" : ""}`}
             >
               <div className="bj-section-head">
+                <Reveal>
+                  <div className="bj-division-logo-badge">
+                    <img
+                      src={division.logo}
+                      alt={`Logo divisi ${division.code} Banantara Joury`}
+                      className="bj-division-logo-img"
+                    />
+                  </div>
+                </Reveal>
                 <Reveal as="span" className="bj-eyebrow">
                   Divisi {division.code}
                 </Reveal>
@@ -116,58 +118,11 @@ export default function ProdukDanJasaPage() {
               </div>
 
               {division.id === "cad" ? (
-                <CadShowcase division={division} groups={cadPortfolioGroups} />
+                <PortfolioGallery groups={cadPortfolioGroups} />
               ) : division.id === "isd" ? (
-                <IsdShowcase division={division} groups={isdPortfolioGroups} />
+                <PortfolioGallery groups={isdPortfolioGroups} />
               ) : division.id === "mmd" ? (
-                <MmdShowcase division={division} videos={mmdVideos} />
-              ) : (
-                <div className="bj-split">
-                  <Reveal className="bj-split-media">
-                    <div className="bj-image-frame bj-image-center">
-                      <img
-                        src={division.logo}
-                        alt={`Logo divisi ${division.code} Banantara Joury`}
-                        className="bj-feature-image"
-                      />
-                    </div>
-                  </Reveal>
-                  <Reveal delay={120} className="bj-split-content">
-                    <span className="bj-eyebrow">Cakupan Keahlian</span>
-                    <h2 className="bj-h3">Pilar Layanan Utama</h2>
-                    <div className="bj-pillar-flow">
-                      {division.pillars.map((pillar, idx) => (
-                        <div className="bj-pillar-flow-item" key={pillar.title}>
-                          <div className="bj-pillar-head">
-                            <span className="bj-pillar-idx">0{idx + 1}</span>
-                            <h4>{pillar.title}</h4>
-                          </div>
-                          <p className="bj-pillar-desc">{pillar.desc}</p>
-                          <ul className="bj-deliverables-list">
-                            {pillar.deliverables.map((item) => (
-                              <li key={item}>
-                                <span className="bj-deliv-dot">
-                                  <CheckIcon size={13} strokeWidth={3.2} />
-                                </span>
-                                <span>{item}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
-                    </div>
-                  </Reveal>
-                </div>
-              )}
-
-              {division.id !== "isd" && division.id !== "cad" ? (
-                <div className="bj-subsection">
-                  <div className="bj-subsection-head">
-                    <h3 className="bj-article-heading">Portofolio {division.code}</h3>
-                    <span className="bj-subsection-note">Contoh pekerjaan representatif</span>
-                  </div>
-                  <Portfolio items={items} divisionCode={division.code} />
-                </div>
+                <MmdInlineShowcase videos={mmdVideos} />
               ) : null}
 
               <div className="bj-subsection">
